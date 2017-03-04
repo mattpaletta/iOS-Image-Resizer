@@ -1,8 +1,21 @@
 import fileinput
 import os
+import sys
+import time
 from sys import version_info
 import PIL
 from PIL import Image
+
+
+def progress(count, total, suffix=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+    
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+    
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', suffix))
+    sys.stdout.flush()  # As suggested by Rom Ruben
 
 def resize(root, file, width, height):
     filename = os.path.join(root, file)
@@ -29,18 +42,47 @@ height = 0
 
 print("\n\tiOS Image Resizer by Matthew Paletta\n")
 
-if py3:
-    width = input("Please enter the desired width of the image(s) (in pixels)")
-    height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels)")
+
+while not os.path.exists("images"):
+    print("Creating images folder...")
+    os.makedirs("images")
+    _ = input("It seems there was no images directory here.  We just created one for you!  Drag any images you would like to use in that folder, then press enter to continue.")
+
+#continue from while loop
+print("Input folder found")
+
+
+if not os.path.exists("output"):
+    print("Creating output folder...")
+    os.makedirs("output")
 else:
-    width = input("Please enter the desired width of the image(s) (in pixels)")
-    height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels)")
+    print("Output folder found")
 
 
+
+if py3:
+    width = input("Please enter the desired width of the image(s) (in pixels) ")
+    height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
+else:
+    width = input("Please enter the desired width of the image(s) (in pixels) ")
+    height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
+
+total = 0
+i = 0
 
 for root, subFolders, files in os.walk("images"):
     for file in files:
-        print "Reading: "+file
+        total += 1
+
+
+for root, subFolders, files in os.walk("images"):
+    
+    for file in files:
+        progress(i, total, "Reading: "+file)
+        i += 1
+        
         if (file.endswith('.png') or file.endswith('.jpg')) and os.path.islink(os.path.join(root, file)) == False:
             
             resize(root, file, int(width), int(height))
+    progress(total, total)
+print("\n")
