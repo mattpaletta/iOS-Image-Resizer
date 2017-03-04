@@ -18,8 +18,10 @@ def resize(root, file, width, height):
         if iteration == 1:
             img.save('output/'+file)
         else:
-            fileext = os.path.splitext(file)[len(os.path.splitext(file))-1]
-            img.save('output/'+os.path.basename(file)+'@'+str(iteration)+'x'+fileext)
+            fileext = os.path.splitext(file)[1]
+            filename = os.path.splitext(file)[0]
+            
+            img.save('output/'+filename+'@'+str(iteration)+'x'+fileext)
 
 py3 = version_info[0] > 2
 width = 0
