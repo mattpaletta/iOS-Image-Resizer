@@ -6,7 +6,16 @@ from sys import version_info
 import PIL
 from PIL import Image
 
-
+'''
+    Updates the progress bar in the terminal window
+    
+    - requires: `count <= total`.
+    - returns: NULL
+    - parameters:
+        - count: The current index out of the total
+        - total: The total number of items to process
+        - suffix: An optional parameter specifying any text at the end of the output
+'''
 def progress(count, total, suffix=''):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
@@ -17,7 +26,21 @@ def progress(count, total, suffix=''):
     sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', suffix))
     sys.stdout.flush()  # As suggested by Rom Ruben
 
-def resize(root, file, width, height):
+'''
+    Resizes and saves an image in a variety of sizes (1x, 2x, 3x)
+    
+    - requires: `width > 0`.
+    - requires: `width >= (width of the original image) / 3`.
+    - requires: 'height >= 0'.
+    
+    - returns: NULL
+    - parameters:
+        - root: The path to the folder
+        - file: The input file, contained in the root folder
+        - width: An optional parameter specifying the width of the output image
+        - height: An optional parameter specifying the height of the image
+    '''
+def resize(root, file, width, height=0):
     filename = os.path.join(root, file)
     img = Image.open(filename)
     wpercent = width / float(img.size[0])
@@ -35,6 +58,9 @@ def resize(root, file, width, height):
             filename = os.path.splitext(file)[0]
             
             img.save('output/'+filename+'@'+str(iteration)+'x'+fileext)
+
+
+
 
 py3 = version_info[0] > 2
 width = 0
@@ -55,8 +81,8 @@ print("Input folder found")
 if not os.path.exists("output"):
     print("Creating output folder...")
     os.makedirs("output")
-else:
-    print("Output folder found")
+
+print("Output folder found\n")
 
 
 
