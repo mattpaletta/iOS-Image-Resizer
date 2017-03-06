@@ -40,8 +40,9 @@ def progress(count, total, suffix=''):
         - width: An optional parameter specifying the width of the output image
         - height: An optional parameter specifying the height of the image
     '''
-def resize(root, file, width, height=0):
+def resize(root, file, width, height=0, overwrite=True):
     filename = os.path.join(root, file)
+    print(root.split('/'))
     img = Image.open(filename)
     wpercent = width / float(img.size[0])
     if height > 0:
@@ -52,12 +53,27 @@ def resize(root, file, width, height=0):
         iteration = i+1
         img = img.resize((width * iteration, hsize * iteration), PIL.Image.ANTIALIAS)
         if iteration == 1:
-            img.save('output/'+file)
+            fileext = os.path.splitext(file)[1]
+            filename = os.path.splitext(file)[0]
+            add = ""
+            while os.path.exists("output/"+filename+str(add)+fileext) and overwrite == False:
+                if add == "":
+                    add = 1
+                else:
+                    add+=1
+            img.save("output/"+filename+str(add)+fileext)
         else:
             fileext = os.path.splitext(file)[1]
             filename = os.path.splitext(file)[0]
             
-            img.save('output/'+filename+'@'+str(iteration)+'x'+fileext)
+            add = ""
+            while os.path.exists("output/"+filename+str(add)+'@'+str(iteration)+'x'+fileext) and overwrite == False:
+                if add == "":
+                    add = 1
+                else:
+                    add+=1
+
+            img.save('output/'+filename+str(add)+'@'+str(iteration)+'x'+fileext)
 
 
 
@@ -65,6 +81,8 @@ def resize(root, file, width, height=0):
 py3 = version_info[0] > 2
 width = 0
 height = 0
+overwrite = True
+over = ""
 
 print("\n\tiOS Image Resizer by Matthew Paletta\n")
 
@@ -87,11 +105,23 @@ print("Output folder found\n")
 
 
 if py3:
+    print("Using Python 3.X")
     width = input("Please enter the desired width of the image(s) (in pixels) ")
     height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
+    over = input("Should overwrite previous? [y/N] ")
+    if over == 'y' or over == 'Y':
+        overwrite = True
+    else:
+        overwrite = False
 else:
-    width = input("Please enter the desired width of the image(s) (in pixels) ")
-    height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
+    print("Using Python 2.X")
+    width = raw_input("Please enter the desired width of the image(s) (in pixels) ")
+    height = raw_input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
+    over = raw_input("Should overwrite previous? [y/N] ")
+    if over == 'y' or over == 'Y':
+        overwrite = True
+    else:
+        overwrite = False
 
 total = 0
 i = 0
@@ -109,6 +139,6 @@ for root, subFolders, files in os.walk("images"):
         
         if (file.endswith('.png') or file.endswith('.jpg')) and os.path.islink(os.path.join(root, file)) == False:
             
-            resize(root, file, int(width), int(height))
+            resize(root, file, int(width), int(height), overwrite)
     progress(total, total)
 print("\n")
