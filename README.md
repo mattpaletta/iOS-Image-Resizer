@@ -9,7 +9,7 @@ By [Matthew Paletta](http://techguyification.com).
 
 First, ensure PILLOW is installed, and up-to-date
 ```console
-pip install pillow
+pip install -r requirements.txt
 ```
 
 ## Usage
