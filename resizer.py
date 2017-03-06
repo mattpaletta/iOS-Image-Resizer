@@ -6,6 +6,13 @@ from sys import version_info
 import PIL
 from PIL import Image
 
+def convertToString(a, s):
+    la = len(a)
+    b = a[0:la] #copy list (like slice() in JavaScript)
+    for i in xrange(0, la): #iterate
+        b[i] = str(b[i]) #convert each to string
+    return s.join(b) #return all string
+
 def isInt(s):
     try:
         int(s)
@@ -53,7 +60,7 @@ def resize(root, file, width, height=0, overwrite=True):
     path = root.split('/')
     if len(path) > 1: #contains sub directory
         if isInt(path[len(path)-1]):
-            width = path[len(path)-1] #set width to the name of the parent folder
+            width = int(path[len(path)-1]) #set width to the name of the parent folder
     
     img = Image.open(filename)
     wpercent = width / float(img.size[0])
@@ -64,31 +71,45 @@ def resize(root, file, width, height=0, overwrite=True):
     for i in range(3):
         iteration = i+1
         img = img.resize((width * iteration, hsize * iteration), PIL.Image.ANTIALIAS)
-        if iteration == 1:
-            fileext = os.path.splitext(file)[1]
-            filename = os.path.splitext(file)[0]
-            add = ""
-            while os.path.exists("output/"+filename+str(add)+fileext) and overwrite == False:
-                if add == "":
-                    add = 1
-                else:
-                    add+=1
-            img.save("output/"+filename+str(add)+fileext)
+
+        fileext = os.path.splitext(file)[1]
+        filename = os.path.splitext(file)[0]
+        
+        add = ""
+        if len(path) > 1: #was in a sub folder, write into same subfolder
+            if os.path.exists("output/"+convertToString(path[1:], "/")) == False:
+                os.makedirs("output/"+convertToString(path[1:], "/"))
+            if iteration == 1:
+                while os.path.exists("output/"+convertToString(path[1:], "/")+"/"+filename+str(add)+fileext) and overwrite == False:
+                    if add == "":
+                        add = 1
+                    else:
+                        add+=1
+                img.save("output/"+convertToString(path[1:], "/")+"/"+filename+str(add)+fileext)
+            else:
+                while os.path.exists("output/"+convertToString(path[1:], "/")+"/"+filename+str(add)+'@'+str(iteration)+'x'+fileext) and overwrite == False:
+                    if add == "":
+                        add = 1
+                    else:
+                        add+=1
+                img.save("output/"+convertToString(path[1:], "/")+"/"+filename+str(add)+'@'+str(iteration)+'x'+fileext)
         else:
-            fileext = os.path.splitext(file)[1]
-            filename = os.path.splitext(file)[0]
-            
-            add = ""
-            while os.path.exists("output/"+filename+str(add)+'@'+str(iteration)+'x'+fileext) and overwrite == False:
-                if add == "":
-                    add = 1
-                else:
-                    add+=1
+            if iteration == 1:
+                while os.path.exists("output/"+filename+str(add)+fileext) and overwrite == False:
+                    if add == "":
+                        add = 1
+                    else:
+                        add+=1
 
-            img.save('output/'+filename+str(add)+'@'+str(iteration)+'x'+fileext)
+                img.save("output/"+filename+str(add)+fileext)
 
-
-
+            else:
+                while os.path.exists("output/"+filename+str(add)+'@'+str(iteration)+'x'+fileext) and overwrite == False:
+                    if add == "":
+                        add = 1
+                    else:
+                        add+=1
+                img.save("output/"+filename+str(add)+'@'+str(iteration)+'x'+fileext)
 
 py3 = version_info[0] > 2
 width = 0
