@@ -138,7 +138,7 @@ print("Output folder found\n")
 
 
 if py3:
-    print("Using Python 3.X")
+    #print("Using Python 3.X")
     width = input("Please enter the desired width of the image(s) (in pixels) ")
     height = input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
     over = input("Should overwrite previous? [y/N] ")
@@ -147,7 +147,7 @@ if py3:
     else:
         overwrite = False
 else:
-    print("Using Python 2.X")
+    #print("Using Python 2.X")
     width = raw_input("Please enter the desired width of the image(s) (in pixels) ")
     height = raw_input("Please enter the desired height of the image(s) [Or by 0 to constrain to proportions] (in pixels) ")
     over = raw_input("Should overwrite previous? [y/N] ")
