@@ -6,6 +6,13 @@ from sys import version_info
 import PIL
 from PIL import Image
 
+def isInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
 '''
     Updates the progress bar in the terminal window
     
@@ -42,7 +49,12 @@ def progress(count, total, suffix=''):
     '''
 def resize(root, file, width, height=0, overwrite=True):
     filename = os.path.join(root, file)
-    print(root.split('/'))
+
+    path = root.split('/')
+    if len(path) > 1: #contains sub directory
+        if isInt(path[len(path)-1]):
+            width = path[len(path)-1] #set width to the name of the parent folder
+    
     img = Image.open(filename)
     wpercent = width / float(img.size[0])
     if height > 0:
