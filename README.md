@@ -41,6 +41,7 @@ The system will process the example images.  Notice, in the "drawable-mdpi" fold
 
 The following image formats are supported:
 - BMP
+- AI
 - EPS
 - ICNS
 - IM
@@ -52,6 +53,8 @@ The following image formats are supported:
 - PPM
 - WebP
 - XBM
+
+.AI files are automatically converted to PNG format, then resized.  This process uses ghostscript in the command line.  Tested on OSX only.
 
 ### Questions, Comments, Concerns, Queries, Qwibbles?
 
