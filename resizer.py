@@ -6,6 +6,29 @@ from sys import version_info
 import PIL
 from PIL import Image
 
+
+def aiToPNG(root, file):
+    filename = os.path.join(root, file)
+    fileext = os.path.splitext(file)[1]
+    fileN = os.path.splitext(file)[0]
+    
+    
+    didRename = False
+    
+    if len(fileN.split(" ")) > 1:
+        fileN = convertToString(fileN.split(" "), "_")
+        os.rename(os.path.join(root,file), os.path.join(root,fileN+fileext))
+        didRename = True
+    
+    #print(filename, fileN, fileext)
+    
+    os.system("gs -dNOPAUSE -dBATCH -sDEVICE=pngalpha -r300 -sOutputFile="+os.path.join(root, fileN+".png")+" "+os.path.join(root, fileN+fileext)+ "> log.txt")
+
+    if didRename == True: # if did rename, undo the actions
+        fileN = convertToString(fileN.split("_"), " ")
+        os.rename(os.path.join(root,file), os.path.join(root,fileN+fileext))
+
+
 def convertToString(a, s):
     la = len(a)
     b = a[0:la] #copy list (like slice() in JavaScript)
@@ -173,5 +196,12 @@ for root, subFolders, files in os.walk("images"):
         if (file.endswith('.png') or file.endswith('.jpg')) and os.path.islink(os.path.join(root, file)) == False:
             
             resize(root, file, int(width), int(height), overwrite)
+        if (file.endswith('.ai') or file.endswith('.psd')) and os.path.islink(os.path.join(root, file)) == False:
+            aiToPNG(root, file)
+            filename = os.path.splitext(file)[0]
+            resize(root, filename+".png", int(width), int(height), overwrite)
+
+            os.remove(os.path.join(root, filename+".png"))
+
     progress(total, total)
 print("\n")
