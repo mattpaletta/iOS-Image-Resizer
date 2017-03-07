@@ -14,20 +14,16 @@ pip install -r requirements.txt
 
 ## Usage
 Images are loaded from the images/ folder.  If this directory does not exist, the program will will automatically create this folder and prompt the user to drag images into that folder before continuing.<br />
-<br />
 Images are processed and output into the output folder.<br />
-<br />
 The user will be asked to enter the width, height, and an overwrite option.<br />
-<br />
+
 WIDTH: determines the width for the 1x version of all photos (see exception below)<br />
 HEIGHT (optional): if 0, the original aspect ratio is maintained for all images.  If there is some other positive number entered, this will be the height for all 1x output images.<br />
-- OVERWRITE: Flag used to indicate if an output images already exists, should the program replace it, or make a numbered version for the new file.<br />
-<br />
-<br />
+OVERWRITE: Flag used to indicate if an output images already exists, should the program replace it, or make a numbered version for the new file.<br />
+
 - If the images are in subfolders, those subfolders are maintained.
 - If the images are in subfolders that are an integer, that number is used as a width for all images within that subfolder.  This allows for more ease of batch processing images.
-<br />
-<br />
+
 ## Example
 To run the program with the example images, run:
 ```console
