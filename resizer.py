@@ -203,5 +203,7 @@ for root, subFolders, files in os.walk("images"):
 
             os.remove(os.path.join(root, filename+".png"))
 
+    if os.path.exists("log.txt"):
+        os.remove("log.txt")
     progress(total, total)
 print("\n")
