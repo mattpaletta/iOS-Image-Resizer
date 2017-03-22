@@ -7,7 +7,14 @@ import PIL
 from PIL import Image
 
 
+def checkGhostScript():
+    if os.system("which gs > /dev/null") != 0:
+        print("Brewing Ghostscript...")
+        os.system("brew install ghostscript > log.txt")
+
+
 def aiToPNG(root, file):
+    checkGhostScript()
     filename = os.path.join(root, file)
     fileext = os.path.splitext(file)[1]
     fileN = os.path.splitext(file)[0]
@@ -27,7 +34,7 @@ def aiToPNG(root, file):
     if didRename == True: # if did rename, undo the actions
         fileN = convertToString(fileN.split("_"), " ")
         os.rename(os.path.join(root,file), os.path.join(root,fileN+fileext))
-
+    print("Converted TO PNG")
 
 def convertToString(a, s):
     la = len(a)
