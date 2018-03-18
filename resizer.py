@@ -55,6 +55,11 @@ class Resizer(object):
 		print("\n")
 
 	def process_images_in_dir(self, input_dir, width, height, overwrite):
+		if not os.path.exists("output"):
+			#print("Creating output folder...")
+			os.makedirs("output")
+
+
 		total = 0
 		i = 0
 
