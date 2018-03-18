@@ -1,4 +1,4 @@
-if ["$TRAVIS_OS_NAME" == "osx" ]; then
+if [ "$TRAVIS_OS_NAME" == "osx" ]; then
   brew update
   brew install openssl realine
   brew outdated pyenv || brew upgrade pyenv
