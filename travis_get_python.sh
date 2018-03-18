@@ -3,11 +3,9 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
   brew install openssl realine
   brew outdated pyenv || brew upgrade pyenv
 
-  brew install pyenv-virtualenv
-  pyenv install $PYTHON
-  export PYENV_VERSION=$PYTHON
-  export PATH="/Users/travis/.pyenv/shims:${PATH}"
-  pyenv-virtualenv env
+  brew install python@{$PYTHON}
+  pip install virtualenv
+  python -m virtualenv env
   source env/bin/activate
   python --version
 fi
