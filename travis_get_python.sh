@@ -5,6 +5,7 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
 
   brew install python@{$PYTHON}
   brew link --overwrite python@{$PYTHON}
+  sudo easy_install pip
   pip install --upgrade pip setuptools
   pip install virtualenv
   python -m virtualenv env
