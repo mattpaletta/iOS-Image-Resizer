@@ -16,5 +16,5 @@ before_install:
   - sh travis_get_python.sh
 
 script:
-  - python test.py
+  - source env/bin/activate && python test.py
 
