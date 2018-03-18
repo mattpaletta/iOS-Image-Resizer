@@ -10,5 +10,6 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
   sudo pip install virtualenv
   python -m virtualenv env
   source env/bin/activate
+  sudo pip install -r requirements.txt
   python --version
 fi
