@@ -1,7 +1,9 @@
 # iOS-Image-Resizer
 Resizes images from a folder and creates 1x, 2x, and 3x versions.
 
-By [Matthew Paletta](http://techguyification.com).
+[![Build Status](https://travis-ci.org/mattpaletta/iOS-Image-Resizer.svg?branch=master)](https://travis-ci.org/mattpaletta/iOS-Image-Resizer)
+
+By [Matthew Paletta](http://mrated.ca).
 
 **iOS Image Resizer** takes the images you've already created and lets you create the variety of sizes for importing into Xcode.
 

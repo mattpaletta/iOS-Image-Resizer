@@ -1,7 +1,6 @@
 language: python
 os: osx
 cache: pip
-
 python:
   - "2.7"
   - "3.6"
